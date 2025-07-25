@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Shopping Cart</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 2rem;
+       background-image:url("https://static.vecteezy.com/system/resources/previews/010/835/736/large_2x/cart-icon-logo-vector.jpg");
+      color: #333;
+      background-size: cover;
+    }
+    .cart-container {
+      max-width: 800px;
+      margin: auto;
+      background-image:url("https://static.vecteezy.com/system/resources/previews/010/835/736/large_2x/cart-icon-logo-vector.jpg");
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+    th, td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    h2 {
+      margin-bottom: 1rem;
+    }
+    .total {
+      font-weight: bold;
+      font-size: 1.3rem;
+      text-align: right;
+      margin-bottom: 2rem;
+    }
+    .btn {
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(45deg, #6a11cb, #2575fc);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 1rem;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 8px 15px rgba(37, 117, 252, 0.4);
+      transition: all 0.3s ease;
+    }
+    .btn:hover {
+      background: linear-gradient(45deg, #2575fc, #6a11cb);
+      box-shadow: 0 15px 20px rgba(37, 117, 252, 0.6);
+      transform: translateY(-3px);
+    }
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="cart-container">
+    <h2>Your Cart</h2>
+
+    {% if cart %}
+      <table>
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Product</th>
+            <th>Unit Price</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in cart %}
+            <tr>
+              <td><img src="{{ item.image }}" alt="{{ item.name }}" /></td>
+              <td>{{ item.name }} (per {{ item.unit }})</td>
+              <td>₹{{ item.price }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>₹{{ item.price * item.quantity }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="total">Total: ₹{{ total }}</div>
+
+      <div class="actions">
+        <a href="{{ url_for('index') }}" class="btn">Continue Shopping</a>
+        <a href="{{ url_for('checkout') }}" class="btn">Proceed to Checkout</a>
+      </div>
+
+    {% else %}
+      <p>Your cart is empty.</p>
+      <a href="{{ url_for('index') }}" class="btn">Start Shopping</a>
+    {% endif %}
+  </div>
+</body>
+</html>

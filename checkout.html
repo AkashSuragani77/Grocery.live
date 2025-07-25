@@ -1,0 +1,198 @@
+<!-- cart.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Your Cart - Grocery Store</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: url('https://static.vecteezy.com/system/resources/previews/019/617/753/original/group-of-money-symbol-png.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #f0f0f0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 20px;
+    }
+
+    .container {
+      background-color: rgba(0, 0, 0, 0.75);
+      padding: 40px 50px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+      max-width: 700px;
+      width: 100%;
+      color: #ddd;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-weight: 700;
+      font-size: 2.5rem;
+      color: yellow;
+      border-bottom: 3px solid #44c7f4;
+      padding-bottom: 15px;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #444;
+    }
+
+    .cart-item img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+      box-shadow: 0 0 8px yellow;
+      flex-shrink: 0;
+    }
+
+    .cart-item-details {
+      flex-grow: 1;
+      margin-left: 20px;
+    }
+
+    .cart-item-details h5 {
+      margin-bottom: 10px;
+      font-size: 1.4rem;
+      color: yellow;
+    }
+
+    .cart-item-details p {
+      margin: 4px 0;
+      font-size: 1.1rem;
+      color: #ccc;
+    }
+
+    .cart-item .total {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: yellow;
+      min-width: 100px;
+      text-align: right;
+    }
+
+    .total-price {
+      text-align: right;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-top: 30px;
+      padding-top: 15px;
+      border-top: 3px solid yellow;
+      color: yellow;
+    }
+
+    .cart-actions {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .cart-actions .btn {
+      background-color: yellow;
+      color: #000;
+      font-weight: 700;
+      font-size: 1.2rem;
+      padding: 12px 40px;
+      border-radius: 10px;
+      margin: 0 15px;
+      border: none;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+      box-shadow: 0 0 10px #44c7f4;
+    }
+
+    .cart-actions .btn:hover {
+      background-color: yellow;
+      color: #fff;
+      box-shadow: 0 0 15px yellow;
+    }
+
+    .btn-danger {
+      background-color: #f44336;
+      color: #fff;
+      box-shadow: 0 0 10px #f44336;
+    }
+
+    .btn-danger:hover {
+      background-color: #c53027;
+      color: #fff;
+      box-shadow: 0 0 15px #c53027;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .cart-item .total {
+        text-align: left;
+        margin-top: 10px;
+        min-width: auto;
+      }
+
+      .cart-actions .btn {
+        margin: 10px 0;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Your Cart</h1>
+
+  {% if cart %}
+    <div class="cart-items">
+      {% for item in cart %}
+        <div class="cart-item">
+          <img src="{{ item.image }}" alt="{{ item.name }}" />
+          <div class="cart-item-details">
+            <h5>{{ item.name }}</h5>
+            <p>Quantity: {{ item.quantity }}</p>
+            <p>Price: ₹{{ item.price }} per {{ item.unit }}</p>
+          </div>
+          <div class="total">
+            ₹{{ item.price * item.quantity }}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="total-price">
+      Total Price: ₹{{ total }}
+    </div>
+
+    <div class="cart-actions">
+      <!-- Form to POST to place_order route -->
+      <form action="{{ url_for('place_order') }}" method="post" style="display:inline;">
+        <button type="submit" class="btn">Place Order</button>
+      </form>
+
+      <a href="{{ url_for('clear_cart') }}" class="btn btn-danger">Clear Cart</a>
+    </div>
+  {% else %}
+    <p>Your cart is empty!</p>
+  {% endif %}
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

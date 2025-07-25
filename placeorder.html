@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Order Confirmation</title>
+  <style>
+    /* Basic styling */
+    body {
+      background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .container {
+      background: #fff;
+      padding: 3rem 4rem;
+      border-radius: 15px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+      animation: fadeIn 1s ease forwards;
+      z-index: 10;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      color: #2c3e50;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: #555;
+    }
+
+    /* Stylish button */
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 2rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(45deg, #6a11cb, #2575fc);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 8px 15px rgba(37, 117, 252, 0.4);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn:hover {
+      background: linear-gradient(45deg, #2575fc, #6a11cb);
+      box-shadow: 0 15px 20px rgba(37, 117, 252, 0.6);
+      transform: translateY(-3px);
+    }
+    .btn::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 300%;
+      height: 300%;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform 0.5s ease;
+      pointer-events: none;
+    }
+    .btn:hover::after {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Confetti container */
+    #confetti-wrapper {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      overflow: visible;
+      z-index: 5;
+    }
+
+    /* Confetti piece */
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: red;
+      opacity: 0.9;
+      will-change: transform, opacity;
+      border-radius: 2px;
+      animation: fall linear forwards;
+    }
+
+    /* Confetti colors */
+    .confetti:nth-child(3n) { background-color: #ff0; }
+    .confetti:nth-child(3n+1) { background-color: #f00; }
+    .confetti:nth-child(3n+2) { background-color: #0ff; }
+    .confetti:nth-child(4n) { background-color: #0f0; }
+    .confetti:nth-child(5n) { background-color: #f0f; }
+
+    /* Falling animation */
+    @keyframes fall {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="confetti-wrapper"></div>
+
+  <div class="container">
+    <h1>Thank you for your order!</h1>
+    <p>Your order has been successfully placed.</p>
+    <a href="{{ url_for('index') }}" class="btn">Continue Shopping</a>
+  </div>
+
+  <script>
+    const confettiWrapper = document.getElementById('confetti-wrapper');
+    const confettiCount = 100;
+
+    function createConfettiPiece() {
+      const confetti = document.createElement('div');
+      confetti.classList.add('confetti');
+
+      // Random size
+      const size = Math.floor(Math.random() * 8) + 6;
+      confetti.style.width = size + 'px';
+      confetti.style.height = size + 'px';
+
+      // Random position across width
+      confetti.style.left = Math.random() * window.innerWidth + 'px';
+
+      // Random animation duration between 3s and 7s
+      confetti.style.animationDuration = (Math.random() * 4 + 3) + 's';
+
+      // Random delay so they don't all fall at once
+      confetti.style.animationDelay = (Math.random() * 5) + 's';
+
+      // Random rotate starting angle
+      confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+      confettiWrapper.appendChild(confetti);
+
+      // Remove after animation ends to keep DOM clean
+      confetti.addEventListener('animationend', () => {
+        confetti.remove();
+      });
+    }
+
+    // Create all confetti pieces
+    for(let i = 0; i < confettiCount; i++) {
+      createConfettiPiece();
+    }
+  </script>
+</body>
+</html>
